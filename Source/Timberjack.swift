@@ -88,7 +88,7 @@ open class Timberjack: URLProtocol {
     
     // MARK: NSURLConnectionDelegate
     
-    func connection(_ connection: NSURLConnection!, didReceiveResponse response: URLResponse!) {
+    @objc func connection(_ connection: NSURLConnection!, didReceiveResponse response: URLResponse!) {
         let policy = URLCache.StoragePolicy(rawValue: request.cachePolicy.rawValue) ?? .notAllowed
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: policy)
         
@@ -96,12 +96,12 @@ open class Timberjack: URLProtocol {
         self.data = NSMutableData()
     }
     
-    func connection(_ connection: NSURLConnection!, didReceiveData data: Data!) {
+    @objc func connection(_ connection: NSURLConnection!, didReceiveData data: Data!) {
         client?.urlProtocol(self, didLoad: data)
         self.data?.append(data)
     }
     
-    func connectionDidFinishLoading(_ connection: NSURLConnection!) {
+    @objc func connectionDidFinishLoading(_ connection: NSURLConnection!) {
         client?.urlProtocolDidFinishLoading(self)
         
         if let response = response {
@@ -109,7 +109,7 @@ open class Timberjack: URLProtocol {
         }
     }
     
-    func connection(_ connection: NSURLConnection!, didFailWithError error: NSError!) {
+    @objc func connection(_ connection: NSURLConnection!, didFailWithError error: NSError!) {
         client?.urlProtocol(self, didFailWithError: error)
         logError(error)
     }
